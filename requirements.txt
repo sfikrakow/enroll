@@ -1,0 +1,2 @@
+django==3.0.2
+datapunt_keycloak_oidc==0.5
