@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} Index {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <select>
+            {% for object in workshops %}
+                <option value = {{ object.id }}>{{ object.name }}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
+{% endblock %}

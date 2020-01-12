@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+    {#    <div id="header">#}
+    {#        <span class="logo">Bookmarks</span>#}
+    {#    </div>#}
+    {% if user.is_authenticated %}
+        <p>Current user: {{ user.email }}</p>
+        {#    <form action="{% url 'oidc_logout' %}" method="post">#}
+        {#        {% csrf_token %}#}
+        {#        <input type="submit" value="logout">#}
+        {#    </form>#}
+        <a href="{% url 'oidc_logout' %}">Logout</a>
+
+    {% else %}
+        <a href="{% url 'oidc_authentication_init' %}">Login</a>
+    {% endif %}
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
