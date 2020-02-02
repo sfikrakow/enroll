@@ -19,6 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^oidc/', include('keycloak_oidc.urls')),
+    path('oidc/', include('sfi_base.urls')),
     path('', include('workshop.urls', namespace='workshop'))
 ]

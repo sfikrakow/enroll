@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from keycloak_oidc.default_settings import *
+from sfi_base.base_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'keycloak_oidc',
-    'workshop.apps.WorkshopConfig',
+    'sfi_base',
+    'workshop',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mozilla_django_oidc.middleware.SessionRefresh',
+    'sfi_base.middleware.TryAuthenticateMiddleware',
 ]
 
 ROOT_URLCONF = 'enroll.urls'
@@ -84,16 +85,11 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'keycloak_oidc.auth.OIDCAuthenticationBackend',
+    'sfi_base.auth.OIDCAuthenticationBackend',
 )
 
 OIDC_RP_CLIENT_ID = 'dev'
 OIDC_RP_CLIENT_SECRET = None
-OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.sfi.pl/auth/realms/public/protocol/openid-connect/auth'
-OIDC_OP_TOKEN_ENDPOINT = 'https://sso.sfi.pl/auth/realms/public/protocol/openid-connect/token'
-OIDC_OP_USER_ENDPOINT = 'https://sso.sfi.pl/auth/realms/public/protocol/openid-connect/userinfo'
-OIDC_OP_JWKS_ENDPOINT = 'https://sso.sfi.pl/auth/realms/public/protocol/openid-connect/certs'
-OIDC_OP_LOGOUT_ENDPOINT = 'https://sso.sfi.pl/auth/realms/public/protocol/openid-connect/logout'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
