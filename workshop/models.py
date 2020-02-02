@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
@@ -16,7 +17,7 @@ class Workshop(models.Model):
 
 class WorkshopRegistration(models.Model):
     workshops_id = models.ForeignKey(Workshop, on_delete=models.CASCADE)
-    participant_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    participant_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateField(default=now)
     active = models.BooleanField()
     accepted = models.BooleanField()

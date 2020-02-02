@@ -3,28 +3,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="{% static "css/base.css" %}" rel="stylesheet">
 </head>
 <body>
-    {#    <div id="header">#}
-    {#        <span class="logo">Bookmarks</span>#}
-    {#    </div>#}
-    {% if user.is_authenticated %}
-        <p>Current user: {{ user.email }}</p>
-        {#    <form action="{% url 'oidc_logout' %}" method="post">#}
-        {#        {% csrf_token %}#}
-        {#        <input type="submit" value="logout">#}
-        {#    </form>#}
-        <a href="{% url 'oidc_logout' %}">Logout</a>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">SFI</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    {% else %}
-        <a href="{% url 'oidc_authentication_init' %}">Login</a>
-    {% endif %}
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+            {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="nav_dropdown"
+                       role="button" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        {% if request.user.last_name %}
+                            {{ request.user.first_name }}
+                            {{ request.user.last_name }}
+                        {% else %}
+                            {{ request.user }}
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right"
+                         aria-labelledby="nav_dropdown">
+                        <a class="dropdown-item" href="#">Agenda</a>
+                        <a class="dropdown-item" href="#">Seek Find Input</a>
+                        <a class="dropdown-item" href="#">CTF</a>
+                        <a class="dropdown-item active" href="#">Warsztaty</a>
+                        <div class="dropdown-divider"></div>
 
-    <div id="content">
-        {% block content %}
-        {% endblock %}
+                        <a class="dropdown-item" href="{% url 'oidc_logout' %}">
+                            Wyloguj się
+                        </a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'oidc_authentication_init' %}" class="btn btn-outline-success my-2 my-sm-0"
+                       role="button">Zaloguj się</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
+</nav>
+
+<main role="main" class="container" id="content">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 </html>
