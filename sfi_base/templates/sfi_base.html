@@ -49,9 +49,10 @@
                                 Panel administracyjny
                             </a>
                         {% endif %}
-                        <a class="dropdown-item" href="{% url 'oidc_logout' %}">
-                            Wyloguj się
-                        </a>
+                        <form class="form-inline" name="logoutForm" action="{% url 'oidc_logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="dropdown-item" type="submit">Wyloguj się</button>
+                        </form>
                     </div>
                 </li>
             {% else %}
