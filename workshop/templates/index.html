@@ -1,12 +1,47 @@
-{% extends "sfi_base.html" %}
-{% block title %} Index {% endblock %}
+{% extends "base.html" %}
+{% block title %} Zarejestruj się na warsztaty {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <select>
-            {% for object in workshops %}
-                <option value = {{ object.id }}>{{ object.name }}</option>
-            {% endfor %}
-        </select>
+    {% if workshops %}
+        <h1>Dostępne warsztaty</h1>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="list-group mb-3" role="tablist">
+                    {% for w in workshops %}
+                        <a class="list-group-item list-group-item-action {% if forloop.first %}active{% endif %}"
+                           id="workshop-list-{{ forloop.counter }}"
+                           data-toggle="list" href="#workshop-{{ forloop.counter }}"
+                           role="tab">{{ w.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    {% for w in workshops %}
+                        <div class="tab-pane fade show {% if forloop.first %}active{% endif %}"
+                             id="workshop-{{ forloop.counter }}"
+                             role="tabpanel">
+                            <div class="d-flex flex-wrap">
+                                <div class="p-2 flex-grow-1"><i class="fas fa-user"></i> {{ w.speaker }}</div>
+                                <div class="p-2"><i class="fas fa-calendar"></i> {{ w.date | date:"j E Y" }}</div>
+                                <div class="p-2"><i class="fas fa-clock"></i> {{ w.date | date:"H:i" }}</div>
+                                <div class="p-2"><i class="fas fa-chair"></i> {{ w.slots }}</div>
+                            </div>
+                            <p class="text-justify">
+                                {{ w.description }}
+                            </p>
+                            <div class="text-right">
+                                <a href="#{{ w.id }}" class="btn btn-success">Zarejestruj się</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    {% else %}
+        <h1>Brak dostępnych rejestracji</h1>
     {% endif %}
 {% endblock %}
