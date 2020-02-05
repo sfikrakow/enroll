@@ -45,7 +45,7 @@
 
                         <div class="dropdown-divider"></div>
                         {% if user.is_staff %}
-                            <a class="dropdown-item" href="/admin/">
+                            <a class="dropdown-item" href="{% url 'admin:index' %}">
                                 Panel administracyjny
                             </a>
                         {% endif %}

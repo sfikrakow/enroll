@@ -31,7 +31,8 @@
                                 {{ w.description }}
                             </p>
                             <div class="text-right">
-                                <a href="#{{ w.id }}" class="btn btn-success">Zarejestruj się</a>
+                                <a href="{% url 'workshop:register_form' w.id %}" class="btn btn-success">Zarejestruj
+                                    się</a>
                             </div>
                         </div>
                     {% endfor %}

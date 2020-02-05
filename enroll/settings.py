@@ -108,3 +108,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# test with `python -m smtpd -n -c DebuggingServer localhost:1025`
+EMAIL_HOST = '127.0.0.1'
+EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = 'SFI <noreply@sfi.pl>'
