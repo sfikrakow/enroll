@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mozilla_django_oidc.middleware.SessionRefresh',
     'sfi_base.middleware.TryAuthenticateMiddleware',
+    'sfi_base.middleware.ForceAdminInEnglish',
 ]
 
 ROOT_URLCONF = 'enroll.urls'

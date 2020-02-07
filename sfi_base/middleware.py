@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils import translation
 
 
 class TryAuthenticateMiddleware:
@@ -24,3 +25,17 @@ class TryAuthenticateMiddleware:
             request.session['oidc_attempted'] = True
 
         return response
+
+
+class ForceAdminInEnglish:
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.path.startswith('/admin'):
+            request.LANG = 'en'
+            translation.activate(request.LANG)
+            request.LANGUAGE_CODE = request.LANG
+
+        return self.get_response(request)
