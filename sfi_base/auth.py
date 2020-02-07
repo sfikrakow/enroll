@@ -6,9 +6,19 @@ from mozilla_django_oidc import auth
 
 class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
 
+    def get_username(self, claims):
+        return claims.get('sub')
+
+    def filter_users_by_claims(self, claims):
+        sub = claims.get('sub')
+        if not sub:
+            return self.UserModel.objects.none()
+        return self.UserModel.objects.filter(username=sub)
+
     def create_or_update_user(self, user, claims):
         user.first_name = claims.get('given_name', '')
         user.last_name = claims.get('family_name', '')
+        user.email = claims.get('email')
         user.is_staff = user.is_superuser = settings.OIDC_ADMIN_ROLE in claims.get('roles')
         user.save()
         self.update_groups(user, claims)

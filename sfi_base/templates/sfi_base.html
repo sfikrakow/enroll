@@ -49,6 +49,7 @@
                                 Panel administracyjny
                             </a>
                         {% endif %}
+                        <a class="dropdown-item" href="https://sso.sfi.pl/auth/realms/public/account/">Moje konto</a>
                         <form class="form-inline" name="logoutForm" action="{% url 'oidc_logout' %}" method="post">
                             {% csrf_token %}
                             <button class="dropdown-item" type="submit">Wyloguj się</button>

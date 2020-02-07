@@ -1,10 +1,4 @@
-import unicodedata
-
 from django.conf import settings
-
-
-def generate_username(email):
-    return unicodedata.normalize('NFKC', email)[:150]
 
 
 def oidc_op_logout(request):

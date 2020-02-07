@@ -1,5 +1,4 @@
 OIDC_OP_LOGOUT_URL_METHOD = 'sfi_base.utils.oidc_op_logout'
-OIDC_USERNAME_ALGO = 'sfi_base.utils.generate_username'
 OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_RP_SCOPES = 'openid email'
 
