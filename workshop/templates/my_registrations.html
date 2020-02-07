@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %} Moje rejestracje na warsztaty {% endblock %}
+
+{% block content %}
+    {% if registration %}
+        <h1 class="mb-4">Twoje rejestracje</h1>
+        <div class="accordion" id="regs">
+            {% for r in registration %}
+                <div class="card">
+                    <div class="card-header" id="registration-{{ forloop.counter }}">
+                        <div class="mb-0 d-flex">
+                            <button class="btn btn-link flex-grow-1 d-flex text-left" type="button"
+                                    data-toggle="collapse"
+                                    data-target="#collapse-{{ forloop.counter }}"
+                                    aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
+                                <span class="flex-grow-1"><i
+                                        class="fas fa-arrow-right mr-2"></i>{{ r.workshop.name }}</span>
+                                <span class="text-decoration-none text-muted mr-2">{% if r.accepted %}
+                                    zaakceptowano{% else %}oczekuje na akceptację{% endif %}</span>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                    data-target="#unregisterModal" data-registration-id="{{ r.id }}"><i
+                                    class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="collapse-{{ forloop.counter }}" class="collapse"
+                         aria-labelledby="registration-{{ forloop.counter }}"
+                         data-parent="#regs">
+                        <div class="card-body">
+                            {% include 'includes/workshop.html' with w=r.workshop %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="modal fade" id="unregisterModal" tabindex="-1" role="dialog" aria-labelledby="unregisterModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="unregisterModalLabel">Czy na pewno chcesz się wyrejestrować?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Jeśli wyrejestrujesz się z warsztatu Twoje miejsce zostanie przyznane następnej osobie w
+                            kolejce.</p>
+                    </div>
+
+                    <form class="form" method="post" action="{% url 'workshop:unregister_form' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="registration-id" name="registration_id" value="">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-danger">Wyrejestruj się</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#unregisterModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var idx = button.data('registration-id');
+                $(this).find('#registration-id').val(idx);
+            })
+        </script>
+
+    {% else %}
+        <h1>Nie masz aktywnych rejestracji</h1>
+    {% endif %}
+{% endblock %}

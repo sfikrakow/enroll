@@ -21,15 +21,7 @@
                         <div class="tab-pane fade show {% if forloop.first %}active{% endif %}"
                              id="workshop-{{ forloop.counter }}"
                              role="tabpanel">
-                            <div class="d-flex flex-wrap">
-                                <div class="p-2 flex-grow-1"><i class="fas fa-user"></i> {{ w.speaker }}</div>
-                                <div class="p-2"><i class="fas fa-calendar"></i> {{ w.date | date:"j E Y" }}</div>
-                                <div class="p-2"><i class="fas fa-clock"></i> {{ w.date | date:"H:i" }}</div>
-                                <div class="p-2"><i class="fas fa-chair"></i> {{ w.slots }}</div>
-                            </div>
-                            <p class="text-justify">
-                                {{ w.description }}
-                            </p>
+                            {% include 'includes/workshop.html' with w=w %}
                             <div class="text-right">
                                 <a href="{% url 'workshop:register_form' w.id %}" class="btn btn-success">Zarejestruj
                                     się</a>
