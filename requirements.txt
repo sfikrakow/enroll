@@ -1,2 +1,2 @@
 django==3.0.3
-mozilla-django-oidc==1.2.3
+-e git+https://git.sfi.pl/scm/djbase/django-sfibase.git@884ac0ddac883e56d129f1edd78109c755bbca99#egg=django_sfibase

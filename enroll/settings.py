@@ -89,9 +89,6 @@ AUTHENTICATION_BACKENDS = (
     'sfi_base.auth.OIDCAuthenticationBackend',
 )
 
-OIDC_RP_CLIENT_ID = 'dev'
-OIDC_RP_CLIENT_SECRET = None
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
