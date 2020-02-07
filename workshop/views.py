@@ -13,6 +13,7 @@ def index(request):
     return render(request, 'index.html', {'workshops': workshops})
 
 
+@login_required
 def my_registrations(request):
     registration = WorkshopRegistration.objects.filter(participant_id=request.user.id, active=True).select_related(
         'workshop')
