@@ -20,6 +20,7 @@ class Workshop(models.Model):
 class Question(models.Model):
     text = models.CharField(max_length=200)
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.text
@@ -37,13 +38,14 @@ class WorkshopRegistration(models.Model):
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateTimeField(default=now)
-    active = models.BooleanField()
-    accepted = models.BooleanField()
+    active = models.BooleanField(default=True)
+    accepted = models.BooleanField(default=False)
 
 
 class RegistrationAnswer(models.Model):
     workshop_registration = models.ForeignKey(WorkshopRegistration, on_delete=models.CASCADE)
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
+    question = models.ForeignKey(Question, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.text

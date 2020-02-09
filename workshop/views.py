@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import FormView
 
 from .forms import UnregisterForm, RegisterForm
-from .models import Workshop, WorkshopRegistration
+from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
 
 
 def index(request):
@@ -26,11 +26,18 @@ def register_form(request, idx: int):
     form = RegisterForm(request.POST or None, workshop_id=idx)
     if request.method == 'POST':
         if form.is_valid():
-            # form.save()
-            # TODO: handle registration
+            registration = WorkshopRegistration(workshop=workshop,
+                                                participant=request.user)
+            registration.save()
+            for que_id in form.cleaned_data:
+                question = get_object_or_404(Question, pk=que_id)
+                reg_ans = RegistrationAnswer(workshop_registration=registration,
+                                             question=question,
+                                             text=form.cleaned_data[que_id])
+                reg_ans.save()
             return redirect('/registrations')
 
-    return render(request, 'register_form.html', {'workshop': workshop, 'form':form})
+    return render(request, 'register_form.html', {'workshop': workshop, 'form': form})
 
 
 @login_required

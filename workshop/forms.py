@@ -8,7 +8,7 @@ class RegisterForm(Form):
     def __init__(self, *args, **kwargs):
         workshop_id = kwargs.pop('workshop_id')
         super(RegisterForm, self).__init__(*args, **kwargs)
-        questions = Question.objects.filter(workshop=workshop_id)
+        questions = Question.objects.filter(workshop=workshop_id, active=True)
         for q in questions:
             ans = DefaultAnswer.objects.filter(question=q.id)
             if ans.count() > 0:
@@ -16,9 +16,6 @@ class RegisterForm(Form):
             else:
                 self.fields[str(q.id)] = forms.CharField(max_length=settings.MAX_ANSWER_LENGTH, widget=forms.TextInput(attrs={'class': 'form-control'}))
             self.fields[str(q.id)].label = q.text
-
-
-    # registration_id = IntegerField()
 
 
 class UnregisterForm(Form):
