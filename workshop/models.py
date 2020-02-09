@@ -14,7 +14,23 @@ class Workshop(models.Model):
     speaker = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name + '(' + str(self.id) + ')'
+        return self.name
+
+
+class Question(models.Model):
+    text = models.CharField(max_length=200)
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
+
+
+class DefaultAnswer(models.Model):
+    text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
 
 
 class WorkshopRegistration(models.Model):
@@ -23,3 +39,11 @@ class WorkshopRegistration(models.Model):
     date = models.DateTimeField(default=now)
     active = models.BooleanField()
     accepted = models.BooleanField()
+
+
+class RegistrationAnswer(models.Model):
+    workshop_registration = models.ForeignKey(WorkshopRegistration, on_delete=models.CASCADE)
+    text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
+
+    def __str__(self):
+        return self.text

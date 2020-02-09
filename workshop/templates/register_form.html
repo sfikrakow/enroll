@@ -14,10 +14,12 @@
                 <div class="card-body">
                     <form method="post" role="form" class="form">
                         {% csrf_token %}
-                        <!-- TODO: Insert form here -->
                         <h5 class="card-title">Rezerwacja imienna dla:</h5>
                         <h6>{{ request.user.first_name }} {{ request.user.last_name }}</h6>
                         <div class="float-left">{{ request.user.email }}</div>
+                        <br />
+                        {{ form }}
+                        <br />
                         <div class="text-right">
                             <button class="btn btn-success align-self-baseline" type="submit">Potwierdź rejestrację
                             </button>

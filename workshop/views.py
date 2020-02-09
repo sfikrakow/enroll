@@ -3,7 +3,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import FormView
 
-from .forms import UnregisterForm
+from .forms import UnregisterForm, RegisterForm
 from .models import Workshop, WorkshopRegistration
 
 
@@ -21,10 +21,16 @@ def my_registrations(request):
 
 
 @login_required
-# TODO: form (formview?)
 def register_form(request, idx: int):
     workshop = get_object_or_404(Workshop, pk=idx)
-    return render(request, 'register_form.html', {'workshop': workshop})
+    form = RegisterForm(request.POST or None, workshop_id=idx)
+    if request.method == 'POST':
+        if form.is_valid():
+            # form.save()
+            # TODO: handle registration
+            return redirect('/registrations')
+
+    return render(request, 'register_form.html', {'workshop': workshop, 'form':form})
 
 
 @login_required

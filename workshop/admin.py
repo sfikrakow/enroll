@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Workshop, WorkshopRegistration
+from .models import Workshop, WorkshopRegistration, Question, DefaultAnswer, RegistrationAnswer
 from django.http import HttpResponse
 import csv
 
@@ -26,3 +26,7 @@ class WorkshposRegistrationsAdmin(admin.ModelAdmin):
 
 admin.site.register(WorkshopRegistration, WorkshposRegistrationsAdmin)
 admin.site.register(Workshop)
+admin.site.register(Question)
+admin.site.register(DefaultAnswer)
+admin.site.register(RegistrationAnswer)
+
