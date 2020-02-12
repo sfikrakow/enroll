@@ -15,8 +15,8 @@
                                     aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
                                 <span class="flex-grow-1"><i
                                         class="fas fa-arrow-right mr-2"></i>{{ r.workshop.name }}</span>
-                                <span class="text-decoration-none text-muted mr-2">{% if r.accepted %}
-                                    zaakceptowano{% else %}oczekuje na akceptację{% endif %}</span>
+                                <span class="text-decoration-none text-muted mr-2">{% if r.accepted == 'AC' %}
+                                    zaakceptowano{% elif r.accepted == 'RE' %}odrzucono{% else %}oczekuje na akceptację{% endif %}</span>
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                     data-target="#unregisterModal" data-registration-id="{{ r.id }}"><i

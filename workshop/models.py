@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class Workshop(models.Model):
@@ -35,11 +36,16 @@ class DefaultAnswer(models.Model):
 
 
 class WorkshopRegistration(models.Model):
+    class Status(models.TextChoices):
+        ACCEPTED = 'AC', _('Accepted')
+        REJECTED = 'RE', _('Rejected')
+        WAITING = 'WA', _('Waiting')
+
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateTimeField(default=now)
+    accepted = models.CharField(max_length=2, choices=Status.choices, default=Status.WAITING)
     active = models.BooleanField(default=True)
-    accepted = models.BooleanField(default=False)
 
 
 class RegistrationAnswer(models.Model):
