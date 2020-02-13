@@ -24,6 +24,7 @@ def my_registrations(request):
 def register_form(request, idx: int):
     workshop = get_object_or_404(Workshop, pk=idx)
     form = RegisterForm(request.POST or None, workshop_id=idx)
+
     if request.method == 'POST':
         if form.is_valid():
             registration = WorkshopRegistration(workshop=workshop,
@@ -35,6 +36,7 @@ def register_form(request, idx: int):
                                              question=question,
                                              text=form.cleaned_data[que_id])
                 reg_ans.save()
+            # TODO: Handle auto accepted registrations
             return redirect('/registrations')
 
     return render(request, 'register_form.html', {'workshop': workshop, 'form': form})
@@ -52,3 +54,20 @@ def unregister_form(request):
         else:
             raise HttpResponseForbidden
     return redirect('workshop:my_registrations')
+
+
+@login_required
+def manage_reg(request):
+    if not request.user.is_staff:
+        return redirect('/registrations')
+    workshops = Workshop.objects.all()
+    return render(request, 'manage_registrations.html', {'workshops': workshops})
+
+
+@login_required
+def load_regs(request, idx: int):
+    if not request.user.is_staff:
+        return redirect('/registrations')
+    workshop = get_object_or_404(Workshop, pk=idx)
+    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True)
+    return render(request, 'registrations.html', {'registrations': registrations})
