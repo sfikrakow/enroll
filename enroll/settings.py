@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'sfi_base',
     'workshop',
 ]
@@ -115,3 +116,5 @@ DEFAULT_FROM_EMAIL = 'SFI <noreply@sfi.pl>'
 
 #
 MAX_ANSWER_LENGTH = 300
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

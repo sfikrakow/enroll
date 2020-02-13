@@ -1,5 +1,15 @@
 {% extends "sfi_base/base.html" %}
 
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block app_name %}
+    Warsztaty
+{% endblock %}
+
 {% block navbar %}
     <li class="nav-item">
         <a class="nav-link" href="/">Zarejestruj się</a>
