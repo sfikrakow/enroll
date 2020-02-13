@@ -8,8 +8,10 @@ from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
 
 
 def index(request):
-    workshops = Workshop.objects.filter(open=True).exclude(workshopregistration__participant_id=request.user.id,
-                                                           workshopregistration__active=True)
+    workshops = Workshop.objects.filter(open=True).exclude(workshopregistration__in=WorkshopRegistration.objects.filter(
+        participant=request.user.id,
+        active=True
+    ))
     return render(request, 'index.html', {'workshops': workshops})
 
 
