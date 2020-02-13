@@ -1,2 +1,3 @@
 django==3.0.3
--e git+https://git.sfi.pl/scm/djbase/django-sfibase.git@7589eadde41c5ee431fd554d95a5c7e0c17c4ca5#egg=django_sfibase
+django-crispy-forms==1.8.1
+-e git+https://git.sfi.pl/scm/djbase/django-sfibase.git@90502d3fbdffa1576cadf59172931429674d8f79#egg=django_sfibase

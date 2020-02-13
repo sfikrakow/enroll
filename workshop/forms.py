@@ -12,9 +12,10 @@ class RegisterForm(Form):
         for q in questions:
             ans = DefaultAnswer.objects.filter(question=q.id)
             if ans.count() > 0:
-                self.fields[str(q.id)] = forms.ModelChoiceField(queryset=ans, widget=forms.Select(attrs={'class': 'form-control'}))
+                self.fields[str(q.id)] = forms.ModelChoiceField(queryset=ans, widget=forms.Select())
             else:
-                self.fields[str(q.id)] = forms.CharField(max_length=settings.MAX_ANSWER_LENGTH, widget=forms.TextInput(attrs={'class': 'form-control'}))
+                self.fields[str(q.id)] = forms.CharField(max_length=settings.MAX_ANSWER_LENGTH,
+                                                         widget=forms.TextInput())
             self.fields[str(q.id)].label = q.text
 
 
