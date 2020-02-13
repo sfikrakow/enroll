@@ -28,6 +28,7 @@ def register_form(request, idx: int):
     form = RegisterForm(request.POST or None, workshop_id=idx)
 
     if request.method == 'POST':
+        # TODO: Check if there is no such registration already
         if form.is_valid():
             registration = WorkshopRegistration(workshop=workshop,
                                                 participant=request.user)
@@ -71,5 +72,10 @@ def load_regs(request, idx: int):
     if not request.user.is_staff:
         return redirect('/registrations')
     workshop = get_object_or_404(Workshop, pk=idx)
-    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True)
-    return render(request, 'registrations.html', {'registrations': registrations})
+    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True).order_by('date')
+    data = []
+    for r in registrations:
+        a = RegistrationAnswer.objects.filter(workshop_registration=r).select_related()
+        data.append({'registration': r,
+                     'answers': a})
+    return render(request, 'registrations.html', {'data': data})
