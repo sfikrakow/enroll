@@ -118,3 +118,5 @@ DEFAULT_FROM_EMAIL = 'SFI <noreply@sfi.pl>'
 MAX_ANSWER_LENGTH = 300
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+OIDC_ADMIN_ROLE = 'workshopsadmin'
