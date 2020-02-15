@@ -46,9 +46,9 @@ class DefaultAnswer(models.Model):
 
 class WorkshopRegistration(models.Model):
     class Status(models.TextChoices):
-        ACCEPTED = 'AC', _('Accepted')
-        REJECTED = 'RE', _('Rejected')
-        WAITING = 'WA', _('Waiting')
+        ACCEPTED = 'AC', _('Zaakceptowane')
+        REJECTED = 'RE', _('Odrzucone')
+        WAITING = 'WA', _('Oczekujące')
 
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
