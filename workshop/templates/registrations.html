@@ -1,57 +1,6 @@
 {% load registrations_filters %}
 
 {% if data %}
-{% comment %}
-        <div class="accordion" id="regs">
-        {% for d in data %}
-            <div class="card">
-                <div class="card-header" id="registration-{{ forloop.counter }}">
-                    <div class="mb-0 d-flex">
-                        <div class="btn btn-link flex-grow-1 d-flex text-left" type="button">
-                            <span class="flex-grow-1"
-                                    {% if not d.registration.workshop.auto_response %}
-                                  data-toggle="collapse"
-                                  data-target="#collapse-{{ forloop.counter }}"
-                                  aria-expanded="true"
-                                    {% endif %}
-                                  aria-controls="collapse-{{ forloop.counter }}"><i
-                                    class="fas fa-arrow-right mr-2"></i>{{ d.registration.participant.first_name }} {{ d.registration.participant.last_name }}</span>
-                            <select class="w-25 form-control">
-                                <option value="AC" {% if d.registration.accepted == 'AC' %} selected {% endif %}>
-                                    Zaakceptowano
-                                </option>
-                                <option value="RE" {% if d.registration.accepted == 'RE' %} selected {% endif %}>
-                                    Odrzucono
-                                </option>
-                                <option value="WA" {% if d.registration.accepted == 'WA' %} selected {% endif %}>
-                                    Oczekuje
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="collapse-{{ forloop.counter }}" class="collapse"
-                     aria-labelledby="registration-{{ forloop.counter }}"
-                     data-parent="#regs">
-                    <div class="card-body">
-                        {% for a in d.answers %}
-                            <p class="text-justifyustify">
-                                {{ a.question.text }}
-                            </p>
-                            <p class="text-justify ml-3">
-                                {{ a.text }}
-                            </p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        <button class="form-control button mt-1" type="submit">
-            Zapisz
-        </button>
-    </div>
-{% endcomment %}
     <form class="form" method="post" role="form" action="{{ request.get_full_path }}">
     {% csrf_token %}
     <div class="accordion" id="regs">
