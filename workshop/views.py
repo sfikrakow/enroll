@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import FormView
 
 from .forms import UnregisterForm, RegisterForm
+from .mail import send_workshop_cancelled
 from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
 
 
@@ -48,6 +49,7 @@ def unregister_form(request):
         if registration.participant.id == request.user.id:
             registration.active = False
             registration.save()
+            send_workshop_cancelled(registration.workshop, request.user, request)
             # TODO: handle unregistration
         else:
             raise HttpResponseForbidden

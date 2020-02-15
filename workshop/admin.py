@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Workshop, WorkshopRegistration, Question, DefaultAnswer, RegistrationAnswer
+from .models import Workshop, WorkshopRegistration, Question, DefaultAnswer, RegistrationAnswer, Location
 from django.http import HttpResponse
 import csv
 
@@ -29,4 +29,4 @@ admin.site.register(Workshop)
 admin.site.register(Question)
 admin.site.register(DefaultAnswer)
 admin.site.register(RegistrationAnswer)
-
+admin.site.register(Location)

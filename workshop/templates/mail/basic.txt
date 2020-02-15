@@ -1,0 +1,15 @@
+{% extends 'mail/base_mail.txt' %}
+
+{% block preheader %}
+    {{ header }}
+{% endblock %}
+
+{% block header %}
+    {{ header }}
+{% endblock %}
+
+{% block content %}
+{{ content }}
+
+Twoje rejestracje ( {{ site_url }} )
+{% endblock %}

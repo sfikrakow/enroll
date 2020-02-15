@@ -5,6 +5,14 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
+class Location(models.Model):
+    address = models.CharField(max_length=200)
+    short = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.short
+
+
 class Workshop(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -13,6 +21,7 @@ class Workshop(models.Model):
     auto_response = models.BooleanField(default=False)
     slots = models.IntegerField()
     speaker = models.CharField(max_length=100)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

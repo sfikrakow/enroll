@@ -1,0 +1,7 @@
+***********************************************************
+{% block header %}{% endblock %}
+***********************************************************
+
+{% block content %}{% endblock %}
+
+Studencki Festiwal Informatyczny ( https://sfi.pl/ )

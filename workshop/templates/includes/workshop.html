@@ -3,7 +3,10 @@
         <div class="p-2 flex-grow-1"><i class="fas fa-user"></i> {{ w.speaker }}</div>
         <div class="p-2"><i class="fas fa-calendar"></i> {{ w.date | date:"j E Y" }}</div>
         <div class="p-2"><i class="fas fa-clock"></i> {{ w.date | date:"H:i" }}</div>
-        <div class="p-2"><i class="fas fa-chair"></i> {{ w.slots }}</div>
+        <div class="p-2" title="{{ w.location.address }}"><a class="text-decoration-none text-white"
+                                                             href="https://www.google.com/maps/search/?api=1&query={{ w.location.address | urlencode:'' }}"
+                                                             target="_blank" rel="nofollow"><i
+                class="fas fa-map-marker-alt"></i> {{ w.location.short }}</a></div>
     </div>
     <p class="text-justify">
         {{ w.description }}
