@@ -21,9 +21,10 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="tab-content" id="showHere">
+                    <div class="tab-content" id="showHere">
 
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="row">
@@ -36,12 +37,12 @@
     function load(id){
         $.ajax({
             type: "GET",
-            url: window.location.href+id,
-            data: {'id':id}
+            url: window.location.href+id
         })
         .done(function (response) {
             $('#showHere').empty().append(response)
         })
+
     }
 </script>
 {% endblock %}

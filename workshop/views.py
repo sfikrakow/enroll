@@ -3,7 +3,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import FormView
 
-from .forms import UnregisterForm, RegisterForm
+from .forms import UnregisterForm, RegisterForm, StatusChangeForm
 from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
 
 
@@ -71,11 +71,23 @@ def manage_reg(request):
 def load_regs(request, idx: int):
     if not request.user.is_staff:
         return redirect('/registrations')
+
+    form = StatusChangeForm(request.POST or None, workshop_id=idx)
+    if request.method == 'POST':
+        if form.is_valid():
+            for tag in form.cleaned_data:
+                status = form.cleaned_data[tag]
+                if status != 'WA':
+                    obj = get_object_or_404(WorkshopRegistration, pk=tag[4:])
+                    obj.accepted = status
+                    obj.save()
+        return redirect('workshop:manage_registrations')
+
     workshop = get_object_or_404(Workshop, pk=idx)
-    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True).order_by('date')
-    data = []
+    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True).exclude(accepted='RE').exclude(
+        accepted='AC').order_by('date')
+    data = {}
     for r in registrations:
         a = RegistrationAnswer.objects.filter(workshop_registration=r).select_related()
-        data.append({'registration': r,
-                     'answers': a})
-    return render(request, 'registrations.html', {'data': data})
+        data[r.id] = {'registration': r, 'answers': a}
+    return render(request, 'registrations.html', {'data': data, 'form': form})
