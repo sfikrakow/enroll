@@ -51,7 +51,7 @@ class ICALWorkshop:
     def get_confirmed_event(self):
         self._event.status = 'CONFIRMED'
         self._calender.method = 'REQUEST'
-        return str(self._calender)
+        return str(self._calender).replace('RSVP=TRUE', 'ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE')
 
     def get_canceled_event(self):
         self._event.status = 'CANCELLED'
