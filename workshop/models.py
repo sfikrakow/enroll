@@ -16,7 +16,8 @@ class Location(models.Model):
 class Workshop(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    date = models.DateTimeField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
     open = models.BooleanField(default=True)
     auto_response = models.BooleanField(default=False)
     slots = models.IntegerField()

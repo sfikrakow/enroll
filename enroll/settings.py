@@ -112,8 +112,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # test with `python -m smtpd -n -c DebuggingServer localhost:1025`
 EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'SFI <noreply@sfi.pl>'
-DEFAULT_REPLY_TO_EMAIL = 'Warsztaty SFI <warsztaty@sfi.pl>'
+DEFAULT_FROM_EMAIL = 'Warsztaty SFI <warsztaty@sfi.pl>'
+DEFAULT_REPLY_TO_EMAIL = 'warsztaty@sfi.pl'
 EMAIL_FAIL_SILENTLY = True
 
 #

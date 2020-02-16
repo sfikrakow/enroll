@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import FormView
 
 from .forms import UnregisterForm, RegisterForm, StatusChangeForm
-from .mail import send_workshop_cancelled
+from .mail import send_workshop_cancelled, send_workshop_confirmation
 from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
 
 
