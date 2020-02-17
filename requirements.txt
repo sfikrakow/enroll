@@ -2,3 +2,5 @@ django==3.0.3
 django-crispy-forms==1.8.1
 ics==0.6
 -e git+https://git.sfi.pl/scm/djbase/django-sfibase.git@90502d3fbdffa1576cadf59172931429674d8f79#egg=django_sfibase
+django-nested-admin==3.2.4
+ics==0.6

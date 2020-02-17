@@ -14,7 +14,7 @@ class Location(models.Model):
 
 
 class Workshop(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     description = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
@@ -29,7 +29,7 @@ class Workshop(models.Model):
 
 
 class Question(models.Model):
-    text = models.CharField(max_length=200)
+    text = models.CharField(max_length=400)
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
 

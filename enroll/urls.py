@@ -20,5 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('oidc/', include('sfi_base.urls')),
-    path('', include('workshop.urls', namespace='workshop'))
+    path('', include('workshop.urls', namespace='workshop')),
+    url(r'^nested_admin/', include('nested_admin.urls')),
+
 ]

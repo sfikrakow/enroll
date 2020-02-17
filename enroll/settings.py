@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'sfi_base',
     'workshop',
+    'nested_admin',
 ]
 
 MIDDLEWARE = [

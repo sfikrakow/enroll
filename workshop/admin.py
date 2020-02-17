@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import Workshop, WorkshopRegistration, Question, DefaultAnswer, RegistrationAnswer, Location
 from django.http import HttpResponse
 import csv
+from django.db import models
+from django.forms import TextInput, Textarea
+import nested_admin
 
 
 class WorkshposRegistrationsAdmin(admin.ModelAdmin):
@@ -24,8 +27,29 @@ class WorkshposRegistrationsAdmin(admin.ModelAdmin):
     export_as_csv.short_description = "Export Selected"
 
 
+class DefaultAnswerInLine(nested_admin.NestedTabularInline):
+    model = DefaultAnswer
+    extra = 0
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': 80})},
+    }
+
+
+class QuestionInLine(nested_admin.NestedTabularInline):
+    model = Question
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': 80})},
+    }
+    exclude = ['active']
+    inlines = [DefaultAnswerInLine]
+
+
+class WorkshopAdmin(nested_admin.NestedModelAdmin):
+    inlines = [QuestionInLine]
+
+
+admin.site.register(Workshop, WorkshopAdmin)
 admin.site.register(WorkshopRegistration, WorkshposRegistrationsAdmin)
-admin.site.register(Workshop)
 admin.site.register(Question)
 admin.site.register(DefaultAnswer)
 admin.site.register(RegistrationAnswer)
