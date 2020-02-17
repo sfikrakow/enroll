@@ -14,7 +14,7 @@ class RegisterForm(Form):
         for q in questions:
             ans = AnswerOption.objects.filter(question=q.id)
             if ans.count() > 0:
-                self.fields[str(q.id)] = forms.ModelChoiceField(queryset=ans, widget=forms.Select())
+                self.fields[str(q.id)] = forms.ModelChoiceField(queryset=ans, empty_label=None, widget=forms.RadioSelect())
             else:
                 self.fields[str(q.id)] = forms.CharField(max_length=settings.MAX_ANSWER_LENGTH,
                                                          widget=forms.TextInput())
