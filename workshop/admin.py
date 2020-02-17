@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Workshop, WorkshopRegistration, Question, DefaultAnswer, RegistrationAnswer, Location
+from .models import Workshop, WorkshopRegistration, Question, AnswerOption, RegistrationAnswer, Location
 from django.http import HttpResponse
 import csv
 from django.db import models
@@ -30,7 +30,7 @@ class WorkshposRegistrationsAdmin(admin.ModelAdmin):
 
 
 class DefaultAnswerInLine(nested_admin.NestedTabularInline):
-    model = DefaultAnswer
+    model = AnswerOption
     extra = 0
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': 80})},
@@ -108,6 +108,6 @@ class WorkshopAdmin(nested_admin.NestedModelAdmin):
 admin.site.register(Workshop, WorkshopAdmin)
 admin.site.register(WorkshopRegistration, WorkshposRegistrationsAdmin)
 admin.site.register(Question)
-admin.site.register(DefaultAnswer)
+admin.site.register(AnswerOption)
 admin.site.register(RegistrationAnswer)
 admin.site.register(Location)

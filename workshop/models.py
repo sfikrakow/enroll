@@ -37,7 +37,7 @@ class Question(models.Model):
         return self.text
 
 
-class DefaultAnswer(models.Model):
+class AnswerOption(models.Model):
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
