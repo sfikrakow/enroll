@@ -3,6 +3,14 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+
+
+def get_name(self):
+    return self.first_name + ' ' + self.last_name
+
+
+User.add_to_class("__str__", get_name)
 
 
 class Location(models.Model):
@@ -57,9 +65,12 @@ class WorkshopRegistration(models.Model):
     accepted = models.CharField(max_length=2, choices=Status.choices, default=Status.WAITING)
     active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.workshop.__str__() + ' | ' + self.participant.__str__()
+
 
 class RegistrationAnswer(models.Model):
-    workshop_registration = models.ForeignKey(WorkshopRegistration, on_delete=models.CASCADE)
+    workshop_registration = models.ForeignKey(WorkshopRegistration, on_delete=models.CASCADE, related_name='answers')
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
     question = models.ForeignKey(Question, on_delete=models.PROTECT)
 
