@@ -9,7 +9,7 @@ from django import forms
 import nested_admin
 import datetime
 from django.utils.html import mark_safe
-from .mail import send_workshop_confirmation, send_workshop_rejected
+from .mail import send_workshop_confirmation, send_workshop_rejected, send_workshop_waiting_list
 
 
 class RegistrationAnswerInLine(admin.TabularInline):
@@ -52,7 +52,7 @@ class AutoResponseFilter(admin.SimpleListFilter):
 
 
 class WorkshopRegistrationAdmin(admin.ModelAdmin):
-    actions = ['accept', 'reject', "export_as_csv"]
+    actions = ['accept', 'reject', 'waiting_list', "export_as_csv"]
 
     def accept(self, request, queryset):
         for obj in queryset:
@@ -69,6 +69,13 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             send_workshop_rejected(obj.workshop, obj.participant, request)
 
     reject.short_description = 'Odrzuć zaznaczone'
+
+    def waiting_list(self, request, queryset):
+        for obj in queryset:
+            obj.accepted = 'WL'
+            obj.save()
+            send_workshop_waiting_list(obj.workshop, obj.participant, request)
+    waiting_list.short_description = 'Lista rezerwowa'
 
     def export_as_csv(self, request, queryset):
         meta = self.model._meta
@@ -87,7 +94,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     export_as_csv.short_description = "Export Selected"
 
     inlines = [RegistrationAnswerInLine, ]
-    list_display = ['workshop', 'participant', 'active', 'accepted', 'list_answers']
+    list_display = ['workshop', 'participant', 'active', 'accepted', 'date', 'list_answers']
     list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter)
 
     def list_answers(self, obj):

@@ -58,6 +58,7 @@ class WorkshopRegistration(models.Model):
         ACCEPTED = 'AC', _('Zaakceptowane')
         REJECTED = 'RE', _('Odrzucone')
         WAITING = 'WA', _('Oczekujące')
+        WAITING_LIST = 'WL', _('Lista rezerwowa')
 
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
