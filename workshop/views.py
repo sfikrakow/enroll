@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import FormView
-
-from .forms import UnregisterForm, RegisterForm, StatusChangeForm
-from .mail import send_workshop_cancelled, send_workshop_confirmation
+from .forms import UnregisterForm, RegisterForm
+from .mail import send_workshop_cancelled, send_workshop_confirmation, send_workshop_pending, \
+    send_workshop_waiting_list, send_workshop_rejected
 from .models import Workshop, WorkshopRegistration, RegistrationAnswer, Question
+from .registrations import handle_registration, handle_unregistration
 
 
 def index(request):
@@ -29,7 +29,10 @@ def register_form(request, idx: int):
     form = RegisterForm(request.POST or None, workshop_id=idx)
 
     if request.method == 'POST':
-        # TODO: Check if there is no such registration already
+        if WorkshopRegistration.objects.filter(workshop=workshop, participant=request.user, active=True).count() > 0:
+            # TODO: Communicate duplicate to user
+            return redirect('workshop:my_registrations')
+
         if form.is_valid():
             registration = WorkshopRegistration(workshop=workshop,
                                                 participant=request.user)
@@ -40,7 +43,8 @@ def register_form(request, idx: int):
                                              question=question,
                                              text=form.cleaned_data[que_id])
                 reg_ans.save()
-            # TODO: Handle auto accepted registrations
+
+            handle_registration(workshop, registration, request)
             return redirect('/registrations')
 
     return render(request, 'register_form.html', {'workshop': workshop, 'form': form})
@@ -54,8 +58,7 @@ def unregister_form(request):
         if registration.participant.id == request.user.id:
             registration.active = False
             registration.save()
-            send_workshop_cancelled(registration.workshop, request.user, request)
-            # TODO: handle unregistration
+            handle_unregistration(registration, request)
         else:
             raise HttpResponseForbidden
     return redirect('workshop:my_registrations')
