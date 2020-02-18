@@ -91,9 +91,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter)
 
     def list_answers(self, obj):
-        # each obj will be an Order obj/instance/row
         to_return = '<ul>'
-        # I'm assuming that there is a name field under the event.Product model. If not change accordingly.
         to_return += '\n'.join(
             '<li>{}</li>'.format(ans.question.text + ' ' + ans.text) for ans in obj.answers.all())
         to_return += '</ul>'

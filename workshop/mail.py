@@ -63,7 +63,7 @@ def send_workshop_confirmation(workshop: Workshop, participant: settings.AUTH_US
     message = SFImailMessage('mail/workshop', _create_workshop_params(
         'Twoja rejestracja na {} została zaakceptowana!'.format(workshop.name), workshop, request),
                              '[SFI] Rejestracja na warsztaty', [participant.email])
-    message.attach('event.ics', ICALWorkshop(workshop, request.user).get_confirmed_event(),
+    message.attach('event.ics', ICALWorkshop(workshop, participant).get_confirmed_event(),
                    'text/calendar; method=REQUEST')
     message.send()
 
@@ -91,7 +91,7 @@ def send_workshop_cancelled(workshop: Workshop, participant: settings.AUTH_USER_
         'content': 'Anulowaliśmy rejestrację na Twoją prośbę.',
         'site_url': request.build_absolute_uri(reverse('workshop:my_registrations'))
     }, '[SFI] Rejestracja na warsztaty', [participant.email])
-    message.attach('event.ics', ICALWorkshop(workshop, request.user).get_canceled_event(),
+    message.attach('event.ics', ICALWorkshop(workshop, participant).get_canceled_event(),
                    'text/calendar; method=CANCEL')
     message.send()
 
@@ -102,6 +102,6 @@ def send_workshop_rejected(workshop: Workshop, participant: settings.AUTH_USER_M
         'content': 'Niestety wszystkie miejsca na tych warsztatach zostąły już przydzielone.',
         'site_url': request.build_absolute_uri(reverse('workshop:my_registrations'))
     }, '[SFI] Rejestracja na warsztaty', [participant.email])
-    message.attach('event.ics', ICALWorkshop(workshop, request.user).get_canceled_event(),
+    message.attach('event.ics', ICALWorkshop(workshop, participant).get_canceled_event(),
                    'text/calendar; method=CANCEL:')
     message.send()
