@@ -59,37 +59,3 @@ def unregister_form(request):
         else:
             raise HttpResponseForbidden
     return redirect('workshop:my_registrations')
-
-
-@login_required
-def manage_reg(request):
-    if not request.user.is_staff:
-        return redirect('/registrations')
-    workshops = Workshop.objects.all()
-    return render(request, 'manage_registrations.html', {'workshops': workshops})
-
-
-@login_required
-def load_regs(request, idx: int):
-    if not request.user.is_staff:
-        return redirect('/registrations')
-
-    form = StatusChangeForm(request.POST or None, workshop_id=idx)
-    if request.method == 'POST':
-        if form.is_valid():
-            for tag in form.cleaned_data:
-                status = form.cleaned_data[tag]
-                if status != 'WA':
-                    obj = get_object_or_404(WorkshopRegistration, pk=tag[4:])
-                    obj.accepted = status
-                    obj.save()
-        return redirect('workshop:manage_registrations')
-
-    workshop = get_object_or_404(Workshop, pk=idx)
-    registrations = WorkshopRegistration.objects.filter(workshop=workshop, active=True).exclude(accepted='RE').exclude(
-        accepted='AC').order_by('date')
-    data = {}
-    for r in registrations:
-        a = RegistrationAnswer.objects.filter(workshop_registration=r).select_related()
-        data[r.id] = {'registration': r, 'answers': a}
-    return render(request, 'registrations.html', {'data': data, 'form': form})
