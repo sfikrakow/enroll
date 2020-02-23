@@ -75,5 +75,8 @@ class RegistrationAnswer(models.Model):
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
     question = models.ForeignKey(Question, on_delete=models.PROTECT)
 
+    class Meta:
+        unique_together = (('workshop_registration', 'question'),)
+
     def __str__(self):
         return self.text

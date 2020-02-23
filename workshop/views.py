@@ -30,7 +30,6 @@ def register_form(request, idx: int):
 
     if request.method == 'POST':
         if WorkshopRegistration.objects.filter(workshop=workshop, participant=request.user, active=True).count() > 0:
-            # TODO: Communicate duplicate to user
             return redirect('workshop:my_registrations')
 
         if form.is_valid():
