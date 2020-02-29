@@ -1,16 +1,18 @@
-from django.contrib import admin
-from .models import Workshop, WorkshopRegistration, Question, AnswerOption, RegistrationAnswer, Location
-from django.http import HttpResponse
-from django.utils.translation import gettext_lazy as _
 import csv
+import datetime
+
+import nested_admin
+from django import forms
+from django.contrib import admin
 from django.db import models
 from django.forms import TextInput
-from django import forms
-import nested_admin
-import datetime
+from django.http import HttpResponse
 from django.utils.html import mark_safe
-from .mail import send_workshop_confirmation, send_workshop_rejected, send_workshop_waiting_list
 from django.contrib.auth.models import Group
+from django.utils.translation import gettext_lazy as _
+
+from .mail import send_workshop_confirmation, send_workshop_rejected, send_workshop_waiting_list
+from .models import Workshop, WorkshopRegistration, Question, AnswerOption, RegistrationAnswer, Location
 
 
 class RegistrationAnswerInLine(admin.TabularInline):
@@ -83,7 +85,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
 
     def accept(self, request, queryset):
         for obj in queryset:
-            obj.accepted = 'AC'
+            obj.accepted = WorkshopRegistration.Status.ACCEPTED
             obj.save()
             send_workshop_confirmation(obj.workshop, obj.participant, request)
 
@@ -91,7 +93,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
 
     def reject(self, request, queryset):
         for obj in queryset:
-            obj.accepted = 'RE'
+            obj.accepted = WorkshopRegistration.Status.REJECTED
             obj.save()
             send_workshop_rejected(obj.workshop, obj.participant, request)
 
@@ -99,7 +101,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
 
     def waiting_list(self, request, queryset):
         for obj in queryset:
-            obj.accepted = 'WL'
+            obj.accepted = WorkshopRegistration.Status.WAITING_LIST
             obj.save()
             send_workshop_waiting_list(obj.workshop, obj.participant, request)
 

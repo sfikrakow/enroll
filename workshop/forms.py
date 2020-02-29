@@ -1,8 +1,8 @@
-from django.forms import Form, IntegerField, CharField
-from .models import Question, Workshop, AnswerOption, RegistrationAnswer, WorkshopRegistration
 import django.forms as forms
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
+from django.forms import Form, IntegerField
+
+from .models import Question, AnswerOption
 
 
 class RegisterForm(Form):

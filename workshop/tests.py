@@ -1,5 +1,6 @@
 from django.test import TestCase
-from .models import RegistrationAnswer, WorkshopRegistration, Question, Workshop, User, Location
+
+from .models import User
 
 
 class TestUserGetName(TestCase):
