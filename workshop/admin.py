@@ -10,6 +10,7 @@ import nested_admin
 import datetime
 from django.utils.html import mark_safe
 from .mail import send_workshop_confirmation, send_workshop_rejected, send_workshop_waiting_list
+from django.contrib.auth.models import Group
 
 
 class RegistrationAnswerInLine(admin.TabularInline):
@@ -51,6 +52,32 @@ class AutoResponseFilter(admin.SimpleListFilter):
         return queryset.filter(workshop__auto_response=self.value())
 
 
+def workshop_free_seats(workshop):
+    slots = workshop.slots
+    accepted = WorkshopRegistration.objects.filter(workshop=workshop, accepted='AC', active=True).count()
+    return slots - accepted
+
+
+class FreeSeatsFilter(admin.SimpleListFilter):
+    title = _('Wolne miejsca')
+    parameter_name = "auto_response"
+
+    def lookups(self, request, model_admin):
+        return (
+            (True, _("Tak")),
+            (False, _("Nie")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() is None:
+            return queryset
+        result = []
+        for q in queryset:
+            if workshop_free_seats(q) > 0:
+                result.append(q)
+        return result
+
+
 class WorkshopRegistrationAdmin(admin.ModelAdmin):
     actions = ['accept', 'reject', 'waiting_list', "export_as_csv"]
 
@@ -75,6 +102,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             obj.accepted = 'WL'
             obj.save()
             send_workshop_waiting_list(obj.workshop, obj.participant, request)
+
     waiting_list.short_description = 'Lista rezerwowa'
 
     def export_as_csv(self, request, queryset):
@@ -94,8 +122,8 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     export_as_csv.short_description = "Export Selected"
 
     inlines = [RegistrationAnswerInLine, ]
-    list_display = ['workshop', 'participant', 'active', 'accepted', 'date', 'list_answers']
-    list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter)
+    list_display = ['workshop', 'participant', 'active', 'accepted', 'date', 'list_answers', 'free_seats']
+    list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter, FreeSeatsFilter)
 
     def list_answers(self, obj):
         to_return = '<ul>'
@@ -103,6 +131,17 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             '<li>{}</li>'.format(ans.question.text + ' ' + ans.text) for ans in obj.answers.all())
         to_return += '</ul>'
         return mark_safe(to_return)
+
+    def free_seats(self, obj):
+        slots = obj.workshop.slots
+        free_seats = workshop_free_seats(obj.workshop)
+        waiting_list = WorkshopRegistration.objects.filter(workshop=obj.workshop, accepted='WL', active=True).count()
+        res = '<ul>'
+        res += '<li>{}</li>'.format('Wolnych miejsc: ' + str(free_seats))
+        res += '\n<li>{}</li>'.format('Lista oczekujących: ' + str(waiting_list))
+        res += '\n<li>{}</li>'.format('Miejsc ogółem: ' + str(slots))
+        res += '</ul>'
+        return mark_safe(res)
 
 
 class AnswerOptionInLine(nested_admin.NestedTabularInline):
@@ -184,7 +223,5 @@ class WorkshopAdmin(nested_admin.NestedModelAdmin):
 
 admin.site.register(Workshop, WorkshopAdmin)
 admin.site.register(WorkshopRegistration, WorkshopRegistrationAdmin)
-admin.site.register(Question)
-admin.site.register(AnswerOption)
-admin.site.register(RegistrationAnswer)
 admin.site.register(Location)
+admin.site.unregister(Group)
