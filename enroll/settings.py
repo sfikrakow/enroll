@@ -123,3 +123,8 @@ MAX_ANSWER_LENGTH = 300
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 OIDC_ADMIN_ROLE = 'workshopsadmin'
+
+try:
+    from .production_settings import *
+except ImportError:
+    pass
