@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from mozilla_django_oidc.urls import OIDCAuthenticateClass
 
 urlpatterns = [
+    path('admin/login/', OIDCAuthenticateClass.as_view()),
     path('admin/', admin.site.urls),
     path('oidc/', include('sfi_base.urls')),
     path('', include('workshop.urls', namespace='workshop')),
     url(r'^nested_admin/', include('nested_admin.urls')),
-
 ]

@@ -1,5 +1,7 @@
 {% extends 'mail/base_mail.html' %}
 
+{% load markdown %}
+
 {% block preheader %}
     {{ header }}
 {% endblock %}
@@ -46,7 +48,7 @@
                         <span style="color: #ffffff; font-family: arial, helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(26, 35, 83); text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline">{{ speaker }}</span>
                     </div>
                     <div style="font-family: inherit; text-align: justify">
-                        <span style="color: #ffffff; font-family: arial, helvetica, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(26, 35, 83); text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline">{{ describtion }}</span>
+                        <span style="color: #ffffff; font-family: arial, helvetica, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(26, 35, 83); text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline">{{ describtion | markdownify | safe }}</span>
                     </div>
                     <div></div>
                 </div>
