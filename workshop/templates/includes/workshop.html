@@ -8,7 +8,7 @@
                                                              target="_blank" rel="nofollow"><i
                 class="fas fa-map-marker-alt"></i> {{ w.location.short }}</a></div>
     </div>
-    <p class="text-justify">
-        {{ w.description }}
-    </p>
+    <div class="text-justify">
+        {{ w.description | linebreaks }}
+    </div>
 </div>

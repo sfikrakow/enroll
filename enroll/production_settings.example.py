@@ -7,8 +7,9 @@ ADMINS = ['admins@sfi.pl']
 
 ALLOWED_HOSTS = ['warsztaty.sfi.pl']
 
-STATIC_ROOT = '/var/www/enroll/static'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+STATIC_ROOT = '/var/www/enroll/static'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
