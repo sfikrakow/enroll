@@ -32,6 +32,7 @@ def handle_registration(workshop: Workshop, registration: WorkshopRegistration, 
 
 
 def handle_unregistration(registration: WorkshopRegistration, request):
-    send_workshop_cancelled(registration.workshop, request.user, request)
+    send_workshop_cancelled(registration.workshop, request.user, request,
+                            registration.accepted == WorkshopRegistration.Status.ACCEPTED)
     if registration.accepted == WorkshopRegistration.Status.ACCEPTED and registration.workshop.auto_response:
         workshop_accept_first(registration.workshop, request)

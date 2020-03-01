@@ -85,14 +85,15 @@ def send_workshop_waiting_list(workshop: Workshop, participant: settings.AUTH_US
     message.send()
 
 
-def send_workshop_cancelled(workshop: Workshop, participant: settings.AUTH_USER_MODEL, request):
+def send_workshop_cancelled(workshop: Workshop, participant: settings.AUTH_USER_MODEL, request, was_accepted):
     message = SFImailMessage('mail/basic', {
         'header': 'Twoja rejestracja na {} została anulowana'.format(workshop.name),
         'content': 'Anulowaliśmy rejestrację na Twoją prośbę.',
         'site_url': request.build_absolute_uri(reverse('workshop:my_registrations'))
     }, '[SFI] Rejestracja na warsztaty', [participant.email])
-    message.attach('event.ics', ICALWorkshop(workshop, participant).get_canceled_event(),
-                   'text/calendar; method=CANCEL')
+    if was_accepted:
+        message.attach('event.ics', ICALWorkshop(workshop, participant).get_canceled_event(),
+                       'text/calendar; method=CANCEL')
     message.send()
 
 
