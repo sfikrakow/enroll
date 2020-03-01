@@ -26,6 +26,8 @@ def handle_registration(workshop: Workshop, registration: WorkshopRegistration, 
             registration.save()
             send_workshop_confirmation(workshop, request.user, request)
         else:
+            registration.accepted = WorkshopRegistration.Status.WAITING_LIST
+            registration.save()
             send_workshop_waiting_list(workshop, request.user, request)
     else:
         send_workshop_pending(workshop, request.user, request)
