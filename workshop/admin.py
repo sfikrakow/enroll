@@ -130,7 +130,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     def list_answers(self, obj):
         to_return = '<ul>'
         to_return += '\n'.join(
-            '<li>{}</li>'.format(ans.question.text + ' ' + ans.text) for ans in obj.answers.all())
+            '<li>{}</li>'.format(ans.question.text + '<br>' + ans.text) for ans in obj.answers.all())
         to_return += '</ul>'
         return mark_safe(to_return)
 
