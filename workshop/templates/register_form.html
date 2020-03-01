@@ -18,7 +18,7 @@
                     <form method="post" role="form" class="form">
                         {% csrf_token %}
                         {{ form | crispy }}
-                        <h5 class="mt-1 mb-3">Rezerwacja imienna dla:</h5>
+                        <h5 class="mt-1 mb-4">Rezerwacja imienna dla:</h5>
                         <h6>{{ request.user.first_name }} {{ request.user.last_name }}</h6>
                         <div>{{ request.user.email }}</div>
                         <div class="text-right">
