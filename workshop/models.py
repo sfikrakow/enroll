@@ -55,10 +55,10 @@ class AnswerOption(models.Model):
 
 class WorkshopRegistration(models.Model):
     class Status(models.TextChoices):
-        ACCEPTED = 'AC', _('Zaakceptowane')
-        REJECTED = 'RE', _('Odrzucone')
-        WAITING = 'WA', _('Oczekujące')
-        WAITING_LIST = 'WL', _('Lista rezerwowa')
+        ACCEPTED = 'AC', _('Accepted')
+        REJECTED = 'RE', _('Rejected')
+        WAITING = 'WA', _('Waiting')
+        WAITING_LIST = 'WL', _('Waiting List')
 
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -23,13 +23,13 @@ class RegistrationAnswerInLine(admin.TabularInline):
 
 
 class ActiveStatusFilter(admin.SimpleListFilter):
-    title = _('Aktywność')
+    title = _('Activity')
     parameter_name = "active"
 
     def lookups(self, request, model_admin):
         return (
-            (True, _("Aktywne")),
-            (False, _("Nieaktywne")),
+            (True, _("Active")),
+            (False, _("Inactive")),
         )
 
     def queryset(self, request, queryset):
@@ -39,13 +39,13 @@ class ActiveStatusFilter(admin.SimpleListFilter):
 
 
 class AutoResponseFilter(admin.SimpleListFilter):
-    title = _('Obsługiwane automatycznie')
+    title = _('Auto Response')
     parameter_name = "auto_response"
 
     def lookups(self, request, model_admin):
         return (
-            (True, _("Tak")),
-            (False, _("Nie")),
+            (True, _("Yes")),
+            (False, _("No")),
         )
 
     def queryset(self, request, queryset):
@@ -61,13 +61,13 @@ def workshop_free_seats(workshop):
 
 
 class FreeSeatsFilter(admin.SimpleListFilter):
-    title = _('Wolne miejsca')
+    title = _('Free slots available')
     parameter_name = "auto_response"
 
     def lookups(self, request, model_admin):
         return (
-            (True, _("Tak")),
-            (False, _("Nie")),
+            (True, _("Yes")),
+            (False, _("No")),
         )
 
     def queryset(self, request, queryset):
@@ -89,7 +89,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             obj.save()
             send_workshop_confirmation(obj.workshop, obj.participant, request)
 
-    accept.short_description = 'Zaakceptuj zaznaczone'
+    accept.short_description = 'Accept selected'
 
     def reject(self, request, queryset):
         for obj in queryset:
@@ -97,7 +97,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             obj.save()
             send_workshop_rejected(obj.workshop, obj.participant, request)
 
-    reject.short_description = 'Odrzuć zaznaczone'
+    reject.short_description = 'Reject selected'
 
     def waiting_list(self, request, queryset):
         for obj in queryset:
@@ -105,7 +105,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
             obj.save()
             send_workshop_waiting_list(obj.workshop, obj.participant, request)
 
-    waiting_list.short_description = 'Lista rezerwowa'
+    waiting_list.short_description = 'Waiting List'
 
     def export_as_csv(self, request, queryset):
         meta = self.model._meta
@@ -139,9 +139,9 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
         free_seats = workshop_free_seats(obj.workshop)
         waiting_list = WorkshopRegistration.objects.filter(workshop=obj.workshop, accepted='WL', active=True).count()
         res = '<ul>'
-        res += '<li>{}</li>'.format('Wolnych miejsc: ' + str(free_seats))
-        res += '\n<li>{}</li>'.format('Lista oczekujących: ' + str(waiting_list))
-        res += '\n<li>{}</li>'.format('Miejsc ogółem: ' + str(slots))
+        res += '<li>{}</li>'.format('Free slots available: ' + str(free_seats))
+        res += '\n<li>{}</li>'.format('Waiting list: ' + str(waiting_list))
+        res += '\n<li>{}</li>'.format('Slots: ' + str(slots))
         res += '</ul>'
         return mark_safe(res)
 
