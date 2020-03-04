@@ -26,12 +26,15 @@ def handle_registration(workshop: Workshop, registration: WorkshopRegistration, 
             registration.save()
             send_workshop_confirmation(workshop, request.user, request)
         else:
+            registration.accepted = WorkshopRegistration.Status.WAITING_LIST
+            registration.save()
             send_workshop_waiting_list(workshop, request.user, request)
     else:
         send_workshop_pending(workshop, request.user, request)
 
 
 def handle_unregistration(registration: WorkshopRegistration, request):
-    send_workshop_cancelled(registration.workshop, request.user, request)
+    send_workshop_cancelled(registration.workshop, request.user, request,
+                            registration.accepted == WorkshopRegistration.Status.ACCEPTED)
     if registration.accepted == WorkshopRegistration.Status.ACCEPTED and registration.workshop.auto_response:
         workshop_accept_first(registration.workshop, request)

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -35,6 +34,9 @@ class Workshop(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['id']
+
 
 class Question(models.Model):
     text = models.CharField(max_length=400)
@@ -44,6 +46,9 @@ class Question(models.Model):
     def __str__(self):
         return self.text
 
+    class Meta:
+        ordering = ['id']
+
 
 class AnswerOption(models.Model):
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
@@ -51,6 +56,9 @@ class AnswerOption(models.Model):
 
     def __str__(self):
         return self.text
+
+    class Meta:
+        ordering = ['id']
 
 
 class WorkshopRegistration(models.Model):
@@ -77,6 +85,7 @@ class RegistrationAnswer(models.Model):
 
     class Meta:
         unique_together = (('workshop_registration', 'question'),)
+        ordering = ['id']
 
     def __str__(self):
         return self.text
