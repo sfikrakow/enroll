@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from django.utils.translation import gettext_lazy as _
 from mozilla_django_oidc.urls import OIDCAuthenticateClass
 
 urlpatterns = [
@@ -25,3 +26,6 @@ urlpatterns = [
     path('', include('workshop.urls', namespace='workshop')),
     url(r'^nested_admin/', include('nested_admin.urls')),
 ]
+admin.site.site_title = _('Workshop administration')
+admin.site.site_header = _('Workshop administration')
+admin.site.index_title = _('Workshop administration')
