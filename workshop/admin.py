@@ -145,6 +145,15 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
         res += '</ul>'
         return mark_safe(res)
 
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if obj.accepted == 'AC':
+            send_workshop_confirmation(obj.workshop, obj.participant, request)
+        elif obj.accepted == 'RE':
+            send_workshop_rejected(obj.workshop, obj.participant, request)
+        elif obj.accepted == 'WL':
+            send_workshop_waiting_list(obj.workshop, obj.participant, request)
+
 
 class AnswerOptionInLine(nested_admin.NestedTabularInline):
     model = AnswerOption
