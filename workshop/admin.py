@@ -126,6 +126,7 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     inlines = [RegistrationAnswerInLine, ]
     list_display = ['workshop', 'participant', 'active', 'accepted', 'date', 'list_answers', 'free_seats']
     list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter, FreeSeatsFilter)
+    readonly_fields = ('accepted',)
 
     def list_answers(self, obj):
         to_return = '<ul>'
@@ -144,15 +145,6 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
         res += '\n<li>{}</li>'.format('Slots: ' + str(slots))
         res += '</ul>'
         return mark_safe(res)
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        if obj.accepted == 'AC':
-            send_workshop_confirmation(obj.workshop, obj.participant, request)
-        elif obj.accepted == 'RE':
-            send_workshop_rejected(obj.workshop, obj.participant, request)
-        elif obj.accepted == 'WL':
-            send_workshop_waiting_list(obj.workshop, obj.participant, request)
 
 
 class AnswerOptionInLine(nested_admin.NestedTabularInline):
