@@ -3,7 +3,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.datetime_safe import datetime
-from django.utils.formats import date_format
 from ics import Calendar, Event, Attendee, Organizer
 
 from workshop.models import Workshop
@@ -25,7 +24,7 @@ class SFImailMessage(EmailMultiAlternatives):
 def _create_workshop_params(header, workshop, request):
     return {
         'header': header,
-        'date': date_format(workshop.start_date, 'j E Y, H:i'),
+        'date': workshop.start_date,
         'location': workshop.location,
         'speaker': workshop.speaker,
         'describtion': workshop.description,
