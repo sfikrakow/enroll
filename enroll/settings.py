@@ -96,7 +96,7 @@ AUTHENTICATION_BACKENDS = (
 
 LANGUAGE_CODE = 'pl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
