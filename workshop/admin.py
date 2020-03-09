@@ -245,8 +245,10 @@ class WorkshopAdmin(nested_admin.NestedModelAdmin):
         slots = obj.slots
         free_seats = workshop_free_seats(obj)
         waiting_list = WorkshopRegistration.objects.filter(workshop=obj, accepted='WL', active=True).count()
+        waiting = WorkshopRegistration.objects.filter(workshop=obj, accepted='WA', active=True).count()
         res = '<ul>'
-        res += '<li>{}</li>'.format('Free slots available: ' + str(free_seats))
+        res += '\n<li>{}</li>'.format('Waiting for acceptance: ' + str(waiting))
+        res += '\n<li>{}</li>'.format('Free slots available: ' + str(free_seats))
         res += '\n<li>{}</li>'.format('Waiting list: ' + str(waiting_list))
         res += '\n<li>{}</li>'.format('Slots: ' + str(slots))
         res += '</ul>'
