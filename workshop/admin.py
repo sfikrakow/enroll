@@ -212,6 +212,8 @@ class ChangeWorkshopModelForm(forms.ModelForm):
 
 
 class WorkshopAdmin(nested_admin.NestedModelAdmin):
+    list_display = ['name', 'open', 'auto_response', 'free_seats']
+    list_filter = ('open', 'auto_response')
     inlines = [QuestionInLine]
 
     def add_view(self, request):
@@ -222,6 +224,33 @@ class WorkshopAdmin(nested_admin.NestedModelAdmin):
         self.form = ChangeWorkshopModelForm
 
         return super(WorkshopAdmin, self).change_view(request, object_id)
+
+    actions = ['open', 'close']
+
+    def open(self, request, queryset):
+        for obj in queryset:
+            obj.open = True
+            obj.save()
+
+    open.short_description = 'Open registration'
+
+    def close(self, request, queryset):
+        for obj in queryset:
+            obj.open = False
+            obj.save()
+
+    close.short_description = 'Close registration'
+
+    def free_seats(self, obj):
+        slots = obj.slots
+        free_seats = workshop_free_seats(obj)
+        waiting_list = WorkshopRegistration.objects.filter(workshop=obj, accepted='WL', active=True).count()
+        res = '<ul>'
+        res += '<li>{}</li>'.format('Free slots available: ' + str(free_seats))
+        res += '\n<li>{}</li>'.format('Waiting list: ' + str(waiting_list))
+        res += '\n<li>{}</li>'.format('Slots: ' + str(slots))
+        res += '</ul>'
+        return mark_safe(res)
 
 
 admin.site.register(Workshop, WorkshopAdmin)
