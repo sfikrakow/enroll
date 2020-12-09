@@ -108,25 +108,43 @@ class WorkshopRegistrationAdmin(admin.ModelAdmin):
     waiting_list.short_description = 'Waiting List'
 
     def export_as_csv(self, request, queryset):
-        meta = self.model._meta
-        field_names = [field.name for field in meta.fields]
+        field_names = [
+            "Workshop",
+            "Participant",
+            "Email",
+            "Active",
+            "Status",
+            "Date",
+            "Answers",
+        ]
 
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
-        writer = csv.writer(response)
+        response['Content-Disposition'] = 'attachment; filename=registrations.csv'
+        writer = csv.writer(response, delimiter=';')
 
         writer.writerow(field_names)
-        for obj in queryset:
-            row = writer.writerow([getattr(obj, field) for field in field_names])
+        for registration in queryset:
+            writer.writerow([
+                registration.workshop,
+                registration.participant,
+                registration.participant.email,
+                registration.active,
+                registration.get_accepted_display(),
+                registration.date.ctime(),
+                '\n'.join(ans.question.text + ': ' + ans.text for ans in registration.answers.all()),
+            ])
 
         return response
 
     export_as_csv.short_description = "Export Selected"
 
     inlines = [RegistrationAnswerInLine, ]
-    list_display = ['workshop', 'participant', 'active', 'accepted', 'date', 'list_answers', 'free_seats']
+    list_display = ['workshop', 'participant', 'email', 'active', 'accepted', 'date', 'list_answers', 'free_seats']
     list_filter = ('workshop', ActiveStatusFilter, 'accepted', AutoResponseFilter, FreeSeatsFilter)
     readonly_fields = ('accepted',)
+
+    def email(self, obj):
+        return obj.participant.email
 
     def list_answers(self, obj):
         to_return = '<ul>'
