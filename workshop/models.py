@@ -81,7 +81,7 @@ class WorkshopRegistration(models.Model):
 class RegistrationAnswer(models.Model):
     workshop_registration = models.ForeignKey(WorkshopRegistration, on_delete=models.CASCADE, related_name='answers')
     text = models.CharField(max_length=settings.MAX_ANSWER_LENGTH)
-    question = models.ForeignKey(Question, on_delete=models.PROTECT)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('workshop_registration', 'question'),)
