@@ -1,4 +1,4 @@
-django==3.0.3
+django==3.0.12
 django-crispy-forms==1.8.1
 ics==0.6
 -e git+https://github.com/sfikrakow/django-sfibase.git@5dfb2f269c791144304ac433f8aa4d03a9b9ac7c#egg=django_sfibase
